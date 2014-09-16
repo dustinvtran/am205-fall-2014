@@ -1,0 +1,99 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage,amsmath,amsfonts,mathpazo,microtype,nicefrac}
+
+% Set-up for hypertext references
+\usepackage{hyperref,color}
+\definecolor{webgreen}{rgb}{0,.35,0}
+\definecolor{webbrown}{rgb}{.6,0,0}
+\definecolor{RoyalBlue}{rgb}{0,0,0.9}
+\hypersetup{
+   colorlinks=true, linktocpage=true, pdfstartpage=3, pdfstartview=FitV,
+   breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,
+   plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,
+   hypertexnames=true, pdfhighlight=/O,
+   urlcolor=webbrown, linkcolor=RoyalBlue, citecolor=webgreen,
+   pdfauthor={Chris H. Rycroft},
+   pdfsubject={Harvard AM205 (Fall 2014)},
+   pdfkeywords={},
+   pdfcreator={pdfLaTeX},
+   pdfproducer={LaTeX with hyperref}
+}
+\hypersetup{pdftitle={AM205: Assignment 0}}
+
+% Macro definitions
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+\pagestyle{empty}
+
+\begin{document}
+\section*{AM205: Assignment 0}
+
+{\it This assignment will not be graded, and consists of several warm-up problems that can be used
+to test and refresh your mathematical and prgramming skills. You do not need to submit your answers.}
+
+\begin{enumerate}
+  \item The Chebyshev polynomials $T_k(x)$ can be defined using the recursive relation
+    \[
+    T_k(x) = 2xT_{k-1}(x) - T_{k-2} (x)
+    \]
+    and $T_0(x)=1$, $T_1(x)=x$. Evaluate and plot the Chebyshev polynomial of
+    degree 5 at 101 evenly spaced points in the interval $x\in [-1,1]$. Draw a
+    2D surface plot of the function $T_3(x)T_5(y)$ on a $101\times 101$ grid on
+    the domain $(x,y) \in [-1,1]^2$.
+  \item Use the iteration
+    \[
+    x_{k+1} = \frac{1}{2} \left( x_k + \frac{a}{x_k} \right)
+    \]
+    to approximate \smash{$\sqrt{a}$}. This is known as Heron's
+    formula\footnote{Heron of Alexandria, 10--70 AD.} and it is equivalent to
+    the Newton--Raphson method for the function $f(x)=x^2-a$. Choose an initial
+    starting value of $x_0=a$ and iterate until $|x_{k+1} - x_k|<\epsilon$ for
+    some tolerance $\epsilon$. Determine the number of iterations required to
+    compute \smash{$\sqrt{5}$} for the cases of $\epsilon=10^{-3}$ and
+    $\epsilon=10^{-9}$.
+  \item
+    \begin{enumerate}
+      \item Let $f(x)=\tan x$ and consider the finite-difference approximation
+	\[
+	f_{\text{diff},2}(x;h) = \frac{f(x+h)-f(x-h)}{2h}
+	\]
+	Make a log--log plot the relative error in $f_{\text{diff},2}(x;h)$ at
+	$x=1$ as a function of $h$ for $h=10^{-k}$, using
+	$k=1,1.5,2,2.5,\ldots, 15.5, 16$. Use linear regression to fit the
+	relative error $y$ to the straight line
+	\[
+	\log y = \log(\alpha) + \beta \log h
+	\]
+	for some coefficients $\alpha$ and $\beta$. Show that $\beta\approx 2$,
+	meaning that the approximation is second-order accurate.
+      \item Repeat the analysis for the stencil
+	\[
+	f_{\text{diff}}(x;h) = \frac{-11f(x) + 18 f(x+h) - 9f(x+2h) + 2f(x+3h)}{6h}
+	\]
+	and determine the rate of convergence $\beta$.
+    \end{enumerate}
+  \item In the first lecture we discussed Archimedes' method of finding an
+    error bound for $\pi$ by drawing inscribed and superscribed regular
+    polygons inside a circle with diameter 1.
+    \begin{enumerate}
+      \item Let $a_n$ and $b_n$ be the circumferences of inscribed and
+	superscribed regular polygons with $3 \times 2^{n-1}$ sides,
+	respectively. The case of $n=1$ therefore corresponds to inscribed and
+	superscribed equilateral triangles. Use geometry to show that
+	\smash{$a_1=\frac{3}{2}\sqrt{3}$} and \smash{$b_1=3\sqrt{3}$}.
+      \item Show that
+	\[
+	\frac{2}{a_{n+1}} = \frac{1}{a_n} + \frac{1}{b_n}, \qquad b_{n+1}^2 = a_{n+1}b_n
+	\]
+	and write a program to evaluate $(a_n,b_n)$ for $n=1,2,\ldots,40$.
+	In addition, calculate \smash{$c_n=\frac{1}{2}(a_n+b_n)$}. 
+      \item Make a semi-log plot of the absolute error $|a_n-\pi|$ and
+	$|c_n-\pi|$ as a function of $n$. How fast do these two sequences
+	converge to $\pi$? Is there a difference in the convergence rate
+	between $a_n$ and $c_n$?
+    \end{enumerate}
+\end{enumerate}
+\end{document}

@@ -1,0 +1,190 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage,amsmath,amsfonts,mathpazo,microtype,nicefrac}
+
+% Set-up for hypertext references
+\usepackage{hyperref,color,textcomp}
+\definecolor{webgreen}{rgb}{0,.35,0}
+\definecolor{webbrown}{rgb}{.6,0,0}
+\definecolor{RoyalBlue}{rgb}{0,0,0.9}
+\hypersetup{
+   colorlinks=true, linktocpage=true, pdfstartpage=3, pdfstartview=FitV,
+   breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,
+   plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,
+   hypertexnames=true, pdfhighlight=/O,
+   urlcolor=webbrown, linkcolor=RoyalBlue, citecolor=webgreen,
+   pdfauthor={Chris H. Rycroft},
+   pdfsubject={Harvard AM205 (Fall 2014)},
+   pdfkeywords={},
+   pdfcreator={pdfLaTeX},
+   pdfproducer={LaTeX with hyperref}
+}
+\hypersetup{pdftitle={AM205: Assignment 1}}
+
+% Macro definitions
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\p}{\partial}
+\newcommand{\Trans}{\mathsf{T}}
+
+\begin{document}
+\section*{AM205: Assignment 1 (due 5~PM, September 26)}
+\begin{enumerate}
+  \item
+    \begin{enumerate}
+      \item Derive the interpolating cubic polynomial for the data points
+	$(0,0)$, $(1,0)$, $(2,1)$, and $(3,2)$ using the monomial basis and the
+	Lagrange basis. Show that these two representations are equivalent.
+	{\it You may need to use NumPy, MATLAB, or other software to solve the
+	linear system for the four degrees of freedom.}
+      \item Find the interpolating polynomial for the data points $(0,2)$, $(2,0)$,
+	$(4,0)$, and $(6,0)$ either by direct calculation or by using your result
+	from (a).
+    \end{enumerate}
+  \item 
+    \begin{enumerate}
+      \item {\bf Error bounds with Lagrange polynomials.} Let
+	$f(x)=e^{4x}+e^{-2x}$. Write a program to calculate and plot the
+	Lagrange polynomial $p_{n-1}(x)$ of $f(x)$ at the Chebyshev points
+	$x_j = \cos ((2j-1)\pi/2n)$ for $j = 1,...,n$. For $n=4$, over the
+	range $[-1,1]$, plot $f(x)$ and Lagrange polynomial $p_3(x)$.
+      \item Recall from the lectures that the infinity norm for a function $g$
+	on $[-1,1]$ is defined as \smash{$||g||_\infty = \max_{x\in[-1,1]}
+	|g(x)|$}. Calculate $||f-p_3||_\infty$ by sampling the function at
+	1,000 equally-spaced points over $[-1,1]$.
+      \item Recall the interpolation error formula from the lectures,
+	\begin{equation}
+	  f(x)-p_{n-1}(x) = \frac{f^{(n)}(\theta)}{n!} (x-x_1)(x-x_2)\ldots(x-x_n)
+        \end{equation}
+	for some $\theta \in [-1,1]$. Use this formula to derive an upper
+	bound for $||f-p_{n-1}||_\infty$ for any positive integer $n$. Your
+	bound should be a mathematical formula, and should not rely on
+	numerical sampling.
+      \item Find a cubic polynomal $p_3^\dagger$ such that
+	$||f-p_3^\dagger||_\infty<||f-p_3||_\infty$.
+    \end{enumerate}
+  \item {\bf Periodic cubic splines.} In the lectures we discussed the
+    construction of cubic splines to interpolate between a number of control
+    points. We found that it was necessary to impose additional constraints at
+    the end points of the spline in order to have enough constraints to
+    determine the cubic spline uniquely. Here, we examine the construction of
+    cubic splines on a periodic interval $t\in [0,4)$, where $t=0$ is
+    equivalent to $t=4$. By working in a periodic interval, this
+    simplifies the spline construction and no additional end point constraints
+    are required.
+    \begin{enumerate}
+      \item Consider the four points $(x,t)=(0,0), (1,1), (2,0), (3,-1)$.
+	Construct a cubic spline $s_x(t)$ that is piecewise cubic in the four
+	intervals $[0,1)$, $[1,2)$, $[2,3)$, and $[3,4)$. At $t=0,1,2,3$ the
+	cubics should match the control points, giving eight constraints. At
+	$t=0,1,2,3$ the first and second derivatives should match, giving and
+	additional eight constraints and allowing $s_x(t)$ to be uniquely
+	determined.
+      \item Plot $s_x(t)$ and $\sin(t\pi/2)$ on the interval $[0,4)$ and
+	show that they are similar.
+      \item Construct a second cubic spline $s_y(t)$ that goes through the
+	four points $(0,1)$, $(1,0)$, $(2,-1)$, and $(3,0)$. Plot $s_y(t)$ and $\cos(t\pi/2)$
+	on the interval $0 \le t <4$ and show that they are similar.
+      \item In the $xy$-plane, plot the parametric curve $(s_x(t),s_y(t))$ for $t\in[0,4)$.
+	Calculate the area enclosed by the parametric curve, and use it to
+	estimate $\pi$ to at least five decimal places, using the relationship
+	$A=\pi r^2$ where $r$ is taken to be 1.
+      \item {\bf Optional for the enthusiasts.} In parts (a) to (c), you
+	constructed cubic spline approximations for sine and cosine using four
+	equally-spaced control points. Generalize this to construct cubic spline
+	approximations for sine and cosine using $n$ equally-spaced control
+	points. What is the rate of convergence of the approximation of $\pi$
+	as $n$ is increased?
+    \end{enumerate}
+  \item {\bf Fitting a planet's orbit.} A planet follows an elliptical orbit,
+    which can be represented in a Cartesian $(x,y)$ coordinate system by the
+    equation
+    \begin{equation}
+      b_0 + b_1x + b_2 y + b_3 xy + b_4 y^2 = x^2.
+    \end{equation}
+    \begin{enumerate}
+      \item Use a linear least-squares fit for the parameters $b_0, b_1, b_2,
+	b_3, b_4$, given the following observations of the planet's position:
+	\begin{center}
+	  \begin{tabular}{c|ccccc}
+	    $x$ & 1.02 & 0.95 & 0.87 & 0.77 & 0.67 \\
+	    $y$ & 0.39 & 0.32 & 0.27 & 0.22 & 0.18 \\
+	    \hline
+	    $x$ & 0.56 & 0.44 & 0.30 & 0.16 & 0.01 \\
+	    $y$ & 0.15 & 0.13 & 0.12 & 0.13 & 0.15
+	  \end{tabular}
+	\end{center}
+	This data is provided in the file \texttt{q4a\_data.txt} on the AM205
+	website.) Plot the resulting orbit with a continuous curve (making sure
+	that you plot the entire ellipse) and the observations (marked with
+	$\times$ symbols) on the same plot. What is the 2-norm of the residual
+	for your best fit?
+      \item The observation data is nearly rank-deficient, which implies that
+	the matrix $A^\Trans A$ is nearly singular and hence the parameter fit will
+	be sensitive to perturbations in the data ({\it i.e.} the least-squares
+	fit is poorly conditioned in this case). To show this, compute the best
+	fit to the perturbed data $\hat x = x + \Delta x$ and $\hat y = y +
+	\Delta y$, where $\Delta x$, $\Delta y$ are given below.
+	\begin{center}
+	  \begin{tabular}{c|ccccc}
+	    $\Delta x$ & -0.0029 & 0.0007 & -0.0082 & -0.0038 & -0.0041\\
+	    $\Delta y$ & -0.0033 & 0.0043 & 0.0006 & 0.0020 & 0.0044 \\
+	    \hline
+	    $\Delta x$ &  0.0026 & -0.0001 & -0.0058 & -0.0005 & -0.0034 \\
+	    $\Delta y$ & 0.0009 &  0.0028 & 0.0034 & 0.0059 & 0.0024
+	  \end{tabular}
+	\end{center}
+	This data is provided in the file \texttt{q4b\_data.txt} on the AM205 website.
+	Overlay the two sets of observations and corresponding orbits on the
+	same plot.
+    \end{enumerate}
+  \item {\bf Approximate solution of a partial differential equation using
+    least-squares fitting.} In the $xy$-plane, an elastic string is stretched
+    along the horizontal axis between $x=0$ and $x=\pi$. It undergoes small
+    vibrations in the vertical direction, so that its vertical position is
+    given by the function $y(x,t)$. The function satisfies the wave equation
+    \begin{equation}
+      \frac{\p^2 y}{\p t^2} = c^2 \frac{\p^2 f}{\p x^2},
+      \label{eq:wave}
+    \end{equation}
+    for some parameter $c$, subject to the boundary conditions that
+    $y(0,t)=y(\pi,t)=0$. One can verify that
+    \begin{equation}
+      y_k(x,t)= \sin kx \cos kct
+    \end{equation}
+    is a solution to Eq.~\ref{eq:wave} for any integer $k$. Since
+    Eq.~\ref{eq:wave} is linear in $y$, it follows that any linear combination
+    of the $y_k$ ({\it e.g.} $y_1+0.2y_2-0.3y_{6}$) will also be a solution.
+    \begin{enumerate}
+      \item Suppose that the initial condition is
+	\begin{equation}
+	  y(x,0) = 10^{-4}x^{8}(\pi-x)^4
+	  \label{eq:init}
+	\end{equation}
+	and $\p_t y(x,0)=0$. Consider the approximation
+	\begin{equation}
+	  y(x,0) \approx \sum_{k=1}^6 \alpha_k \sin kx
+	  \label{eq:approx}
+	\end{equation}
+	for some parameters $\alpha_1, \alpha_2, \ldots, \alpha_6$. By
+	evaluating Eq.~\ref{eq:init} at the 49 points \smash{$\frac{\pi}{50}$},
+	\smash{$\frac{2\pi}{50}$}, $\ldots$, \smash{$\frac{49\pi}{50}$}, find
+	the least-squares fit of the $\alpha_i$.
+      \item Using your calculation from part (a), write down an approximate
+	solution $y_\text{ap}(x,t)$ to Eq.~\ref{eq:wave}. Set $c=1$. On the
+	same axes, plot Eq.~\ref{eq:init}, and $y_\text{ap}(x,t)$ for
+	\smash{$t=0,\frac{\pi}{4}, \frac{\pi}{2}, \frac{3\pi}{4}, \pi$}.
+      \item {\bf Optional for the enthusiasts.} If you are familiar with
+	Fourier analysis, you will notice that Eq.~\ref{eq:approx} is similar
+	to a Fourier sine series,
+	\begin{equation}
+	  y(x,0) = \sum_{k=1}^\infty b_k \sin kx.
+	\end{equation}
+	Evaluate the $b_k$ using the standard Fourier integral formula---this
+	can either be done numerically or with the aid of a symbolic
+	maninupulation package such as Maple or Mathematica. Compare the values
+	of the $b_k$ with the $\alpha_k$.
+    \end{enumerate}
+\end{enumerate}
+\end{document}
