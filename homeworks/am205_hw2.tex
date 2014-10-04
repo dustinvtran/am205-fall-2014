@@ -209,8 +209,7 @@ homework can be downloaded as a single ZIP file from the course website.}
 	\href{http://en.wikipedia.org/wiki/Kernel_(linear_algebra)}{null
 	space}, $f(m,n)=mn-\rank A$.\footnote{Note that $f(m,n)$ is equal to
 	the number of zero diagonal entries in $U$, in the LU factorization of $A$.}
-      \item {\bf Optional.} For the $5\times 5$ grid, find four linearly
-	independent press patterns that leave all of the lights switched off.
+      \item {\bf Optional.} For the $5\times 5$ grid, find two linearly independent press patterns that leave all of the lights switched off. For the $4\times 4$ grid, find four linearly independent press patterns that leave all of the lights switched off.
     \end{enumerate}
   \item {\bf Difficult cases for LU factorization.} Matrices of the form 
       \begin{equation}
@@ -234,7 +233,7 @@ homework can be downloaded as a single ZIP file from the course website.}
 	Make a plot of $t(n)$ as a function of $n$.\footnote{For examples of
 	how to time functions, see the \texttt{lu\_\,time.py} and
 	\texttt{chol\_\,time.py} examples from lecture 8.} You should find that
-	the $t(n)\sim \alpha t^\beta$. Determine $\alpha$ and $\beta$ and
+	the $t(n)\sim \alpha n^\beta$. Determine $\alpha$ and $\beta$ and
 	discuss whether the value of $\beta$ is reasonable, given the number of
 	operations that \texttt{generate\_\,g} does.
       \item For $n = 10, 20, \ldots, 200$, set $x = [1,1,\ldots,1]^T \in \R^n$ and
@@ -247,10 +246,11 @@ homework can be downloaded as a single ZIP file from the course website.}
 	numerically unstable in this case. In addition, make a plot that
 	shows that the inequality
 	\begin{equation}
-	  \frac{\|x - \hat x\|_2}{\|\hat x\|_2} \leq \kappa(G_n,2)\frac{\|r(\hat x)\|_2}{\|A\|_2\|\hat x\|_2}
+	  \frac{\|x - \hat x\|_2}{\|\hat x\|_2} \leq \kappa(G_n,2)\frac{\|r(\hat x)\|_2}{\|G_n\|_2\|\hat x\|_2}
 	\end{equation}
 	is satisfied, where $\kappa(G_n,2)$ is the condition number of $G_n$
-	with respect to the 2-norm.
+	with respect to the 2-norm, and $r(\hat{x})=b-G_n\hat{x}$ is the
+	residual.
     \end{enumerate}
   \item {\bf Singular Value Decomposition (SVD) and Principal Component Analysis (PCA).} Suppose we are given a data set represented by a matrix $X \in \R^{m\times n}$. One way to analyze this data is to perform PCA, which consists of computing the eigenvalue decomposition of the matrix $XX^\Trans$. The eigenvectors of $XX^\Trans$ are referred to as principal components, and the eigenvalues related to the variance in the data set associated with the principal components.
     \begin{enumerate}
