@@ -200,8 +200,12 @@ homework can be downloaded as a single ZIP file from the course website.}
 	\end{center}
 	For each case, present your results as in a $7\times 7$ grid, such as
 	by using the \texttt{spy} command in NumPy and MATLAB. In addition,
-	create a light pattern of your own and solve it.
-      \item For the $7\times 7$ grid the matrix $A$ in Eq.~\ref{eq:lights} is
+	create a light pattern of your own\footnote{If you wish to get
+	creative, your pattern can be on a different-sized grid than $7\times
+	7$. Any particularly awesome examples will be mentioned in class.} and
+	solve it.
+      \item For the $7\times 7$ grid the matrix $A$ in
+	Eq.~\ref{eq:lights} is
 	non-singular, so that every combination of lights can be created with
 	presses. However, this is not always the case for a general $m\times n$
 	grid. For each $m\times n$ grid with $m,n\in \{1,2,\ldots,9\}$
@@ -210,6 +214,11 @@ homework can be downloaded as a single ZIP file from the course website.}
 	space}, $f(m,n)=mn-\rank A$.\footnote{Note that $f(m,n)$ is equal to
 	the number of zero diagonal entries in $U$, in the LU factorization of $A$.}
       \item {\bf Optional.} For the $5\times 5$ grid, find two linearly independent press patterns that leave all of the lights switched off. For the $4\times 4$ grid, find four linearly independent press patterns that leave all of the lights switched off.
+      \item \textbf{Optional.} Suppose that you play the game on a polyhedron,
+	so that pressing on a face lights up that face, as well as the
+	neighboring faces that share an edge. For the five
+	\href{http://en.wikipedia.org/wiki/Platonic_solid}{platonic solids},
+	what is the dimension of the null space of $A$?
     \end{enumerate}
   \item {\bf Difficult cases for LU factorization.} Matrices of the form 
       \begin{equation}
