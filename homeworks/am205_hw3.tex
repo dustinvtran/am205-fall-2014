@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,amsmath,amsfonts,mathpazo,microtype,nicefrac,graphicx}
+
+% Set-up for hypertext references
+\usepackage{hyperref,color,textcomp}
+\definecolor{webgreen}{rgb}{0,.35,0}
+\definecolor{webbrown}{rgb}{.6,0,0}
+\definecolor{RoyalBlue}{rgb}{0,0,0.9}
+\hypersetup{
+   colorlinks=true, linktocpage=true, pdfstartpage=3, pdfstartview=FitV,
+   breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,
+   plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,
+   hypertexnames=true, pdfhighlight=/O,
+   urlcolor=webbrown, linkcolor=RoyalBlue, citecolor=webgreen,
+   pdfauthor={Chris H. Rycroft},
+   pdfsubject={Harvard AM205 (Fall 2014)},
+   pdfkeywords={},
+   pdfcreator={pdfLaTeX},
+   pdfproducer={LaTeX with hyperref}
+}
+\hypersetup{pdftitle={AM205: Assignment 3}}
+
+% Macro definitions
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\p}{\partial}
+\newcommand{\Trans}{\mathsf{T}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vb}{\vec{b}}
+
+\DeclareMathOperator{\rank}{rank}
+
+\begin{document}
+\section*{AM205: Assignment 3 (due 5~PM, October 24)}
+\begin{enumerate}
+  \item {\bf Convergence rates of two integrals.} Consider the function
+    \begin{equation}
+      f(x)=\frac{1}{\tfrac{5}{4} - \cos x}.
+    \end{equation}
+    \begin{enumerate}
+      \item It can be shown that
+	\begin{equation}
+	  I_A = \int_0^{\pi/3}f(x)dx = \frac{8\pi}{9}.
+	\end{equation}
+	Write a program to numerically evaluate $I_A$ using the composite
+	trapezoid rule with $n$ intervals of equal size $h$, for
+	$n=1,2,\ldots,50$, and make a log--log plot of the absolute error as a
+	function $h$. On the same axes, overlay the composite trapezoid error
+	bound from the lectures,
+	\smash{$E(h)=\frac{h^2\pi}{24}||f''||_\infty$}, and show that your
+	numerically computed results are smaller than the bound.
+      \item It can be shown that
+	\begin{equation}
+	  I_B = \int_0^{2\pi}f(x)dx = \frac{8\pi}{3}.\label{eq:res_calc}
+	\end{equation}
+	Write a program to numerically evaluate $I_B$ using the composite
+	trapezoid rule with $n$ points, for $n=1,2,\ldots,50$. Make a log--log
+	plot of the absolute error as a function $h$. Does the absolute error
+	scale like $h^m$ for some $m$?
+      \item \textbf{Optional.} Use
+	\href{http://en.wikipedia.org/wiki/Residue_theorem}{residue calculus}
+	to prove the integral in Eq.~\ref{eq:res_calc}.
+    \end{enumerate}
+  \item
+    \begin{enumerate}
+      \item \textbf{Adaptive integration.} Given that the cubic Legendre
+	polynomial is \smash{$P_3(x) = \frac{1}{2}x(5x^2-3)$}, derive the
+	3-point Gauss quadrature rule on the interval $[-1,1]$ by evaluating
+	the relevant integrals by hand. Demonstrate that this quadrature rule
+	integrates all polynomials up to the expected degree exactly.
+      \item In the lectures we discussed a method of evaluating integrals
+	\smash{$\int_a^b f(x)dx$} by adaptively refining the calculation in
+	regions where the function varies rapidly. To begin, a tolerance level
+	$T$ is introduced, and the calculation starts using a single
+	integration interval $[a,b]$.
+	
+	Let $I_{a,b}$ be the integral of $f$ over this interval using the
+	three-point quadrature rule from part (a). In addition, define
+	\smash{$c=\frac{a+b}{2}$} and calculate $\hat{I}_{a,b}=I_{a,c}+I_{c,b}$
+	as a more refined estimate of the integral. Then
+	$E_{a,b}=|I_{a,b}-\hat{I}_{a,b}|$ is an estimate of the error of
+	$I_{a,b}$. If $E_{a,b}<Tl$, where $l$ is the length of the interval,
+	then the error is acceptable, and the method can terminate. Otherwise
+	this interval must be subdivided into $[a,c]$ and $[c,b]$, and the
+	above procedure must be applied to these two intervals. The procedure
+	must be applied recursively until the errors become smaller than the
+	tolerance.
+
+	Write a function to implement this adaptive integration scheme. Using
+	$T=10^{-6}$, apply it to the integrals
+	\begin{equation}
+	  \int_{-1}^{3/4} (x^n-x^2+1) dx
+	\end{equation}
+	for $m=4,5,6,7,8$. For each case, report the value of the integral, the
+	total estimated error (by summing the relevant $E_{\alpha,\beta}$
+	terms), and the total number of intervals that are used.
+      \item Use your adaptive integration routine from part (a) and $T=10^{-6}$
+	to evaluate the four integrals
+	\[
+	\int_{-1}^1 |x| dx, \qquad \int_{-1}^2 |x| dx, \qquad \int_{-1}^2 \cosh\left(\sin \frac{x\pi \sqrt{5}}{\sqrt{3}}\right) dx, \qquad \int_0^1 x^{3/4} \sin \frac{1}{x} \, dx.
+	\]
+	For each case, report the value of the integral, the
+	total estimated error (by summing the relevant $E_{\alpha,\beta}$
+	terms), and the total number of intervals that are used.
+      \item One of your integrals from part (c) is incorrect, and the true
+	answer is significantly outside the estimated error bound. Determine
+	which integral this is, and state why this happens. Find a method of
+	altering your integration routine to correctly calculate the integral
+	to five decimal places of accuracy.
+    \end{enumerate}
+  \item \textbf{Error analysis of a numerical integration rule.} Applying the
+    midpoint quadrature rule (\textit{i.e.} $n=0$ Newton--Cotes with the quadrature
+    point at the midpoint) on the interval $[t_k,t_{k+1}]$ to \smash{$y(t_{k+1}) =
+    y(t_k) + \int_{t_k}^{t_{k+1}}f(t,y(t))dt$} leads to the implicit
+    \textit{midpoint method},
+    \begin{equation}
+      y_{k+1} = y_{k} + hf(t_{k+1/2},(y_k+y_{k+1})/2),
+    \end{equation}
+    where \smash{$t_{k+1/2} = t_k + \frac{h}{2}$}.
+    \begin{enumerate}
+      \item Use Taylor series expansions to show that the order of accuracy of
+	this method is 2.
+      \item What is the stability region of the method for the equation $y' =
+	\lambda y$? In other words, for what values of $\bar{h} = h\lambda \in
+	\C$ is the method stable?
+    \end{enumerate}
+  \item 
+    \begin{enumerate}
+      \item \textbf{A multi-step method.} Consider solving the differential
+	equation $y'=f(t,y)$ at timepoints $t_k$ with corresponding numerical
+	solutions $y_k$. The multi-step Nystr\"om numerical method is based
+	upon the integral relation
+	\begin{equation}
+	  y(t_{k+1}) = y(t_{k-1}) + \int_{t_{k-1}}^{t_{k+1}} f(t,y) dt.
+	\end{equation}
+	Derive a multi-step numerical method by approximating the integrand
+	$f(t,y)$ with the polynomial interpolation using the function
+	values at $t_{k-2}$, $t_{k-1}$, and $t_k$. Your method should have the
+	form
+	\begin{equation}
+	  y_{k+1} = y_{k-1} + h(\alpha f_{k-2}+\beta f_{k-1} + \gamma f_k) \label{eq:nys}
+	\end{equation}
+	where $\alpha$, $\beta$, and $\gamma$ are constants to be determined,
+	$h$ is the timestep interval size, and $f_l=f(t_l,y_l)$ for an arbitrary
+	$l$.
+      \item Find the exact solution to the second-order differential equation
+	\begin{equation}
+	  y''(t)+2y'(t) + 5y(t)=0. \label{eq:ode2}
+	\end{equation}
+	subject to the initial conditions $y(0)=1$, $y'(0)=0$.
+      \item Write Eq.~\ref{eq:ode2} as a coupled system of two first-order
+	differential equations for $\vec{y}=(y,v)=(y,y')$. Solve the system
+	over the interval $0\le t\le 3$ with a timestep of $h=0.02$ using your
+	multi-step method from part (a).
+
+	Before Eq.~\ref{eq:nys} can be applied, $\vec{y}_1$ and $\vec{y}_2$
+	must be calculated accurately. Use one of the following two approaches:
+	\begin{enumerate}
+	  \item set them based on the exact solution from part (b),
+	  \item calculate them using the classical fourth-order Runge--Kutta
+	    method.
+	\end{enumerate}
+	Make a log--log plot of the absolute error between the numerical and
+	exact values of $y$ at $t=3$ as a function of $h$, over the range from
+	$h=10^{-4}$ to $h=10^{-1}$. Show that your method is third-order
+	accurate.
+      \item \textbf{Optional.} Suppose that instead of setting $\vec{y}_1$ and
+	$\vec{y}_2$ accurately, you instead make use of forward Euler steps.
+	Create a log--log plot of the absolute error as a function of $h$ for
+	this case and determine the order of accuracy.
+    \end{enumerate}
+  \item \textbf{Asteroid collision.} An asteroid is detected near the Earth and
+    the Moon in the plane of their orbits. Use your ODE-solving skills to
+    determine if there is danger of collision.
+
+    This problem can be treated as a circular restricted three-body problem,
+    which considers the motion of an object of negligible mass in the presence
+    of two massive gravitating bodies that circularly orbit each other. The
+    motion of the object is assumed to be restriced to the 2D plane of the
+    circular orbit of the two massive bodies.
+
+    The Earth and Moon have circular orbits about each other. If we work in a
+    co-rotating frame, we can consider the Earth and Moon to be at fixed
+    locations and then we only need to determine the trajectory of the
+    asteroid. In dimensionless units, fix the Earth at position $(x,y)=(0,0)$
+    and the Moon at position $(x,y)=(1,0)$. 
+
+    The asteroid (which has negligible mass) will move according to the
+    gravitational forces it feels from the Earth and the Moon. The motion of
+    the asteroid is described by its position $x(t)$, $y(t)$, and velocity
+    $u(t)$, $v(t)$ as functions of time. Throughout the asteroid's movement,
+    the \textit{Jacobi integral}, $J$, is a constant of motion, and is given
+    by
+    \begin{equation}
+      J(x,y,u,v) = (x+\mu)^2 + y^2 + \frac{2(1-\mu)}{\sqrt{x^2+y^2}} +
+      \frac{2\mu}{\sqrt{(x-1)^2+y^2}} - u^2 - v^2
+    \end{equation}
+    where $\mu=0.01$ is the mass ratio of the Moon to Earth.
+    The asteroid's equations of motion are given by the system of ODEs,
+    \begin{align}
+      x' &= -\frac{1}{2}\frac{\p J}{\p u}, &y' &= -\frac{1}{2}\frac{\p J}{\p v}, \nonumber\\
+      u' &= v +\frac{1}{2}\frac{\p J}{\p x},  &v' &= -u+\frac{1}{2}\frac{\p J}{\p y}.
+    \end{align}
+    \begin{enumerate}
+      \item Write the system of ODEs to be solved in terms of $x$, $y$, $u$,
+	and $v$.
+      \item Suppose that based on observations we know that at $t=0$ the
+	asteroid's position and velocity are given by $(x(0),y(0))=(1.08,0)$
+	and $(u(0),v(0)) = (0.5\cos(\theta),0.5\sin(\theta))$ where
+	\smash{$\theta\in[\frac{3\pi}{2}-0.3,\frac{3\pi}{2}+0.3]$}, so there is some
+	uncertainty in the asteroid's initial velocity. Use your favorite
+	ODE solver\footnote{In Python, a good choice would be the \texttt{odeint} routine.
+	In MATLAB, the \texttt{ode45} routine could be used, using the additional
+	command \texttt{odeset('RelTol',1e-10,'AbsTol',1e-10)} to improve accuracy.}
+	to integrate this ODE from $t=0$ to $t=7$, using 5 different
+	initial conditions determined by sampling $\theta$ at evenly spaced
+	points in the interval
+	\smash{$[\frac{3\pi}{2}-0.3,\frac{3\pi}{2}+0.3]$} (your samples should
+	include the endpoints of the interval).
+
+	On a single figure, plot the five trajectories $(x(t),y(t))$ of the
+	asteroid corresponding to the initial conditions you considered. The
+	Earth has radius $R_\text{Earth}=0.02$ and the Moon has radius
+	$R_\text{Moon}=0.005$. Add circles of the appropriate radii on your
+	plot to indicate the regions occupied by the Moon and the Earth. Do any
+	of the five trajectories collide with the Earth or Moon between $t=0$
+	and $t=7$? If yes, which initial condition (or initial conditions)
+	produce a collision?
+      \item If this ODE system were solved exactly, the Jacobi integral would
+	be exactly constant as a function of time, since it is a conserved
+	quantity of the system. We can therefore use the value of the Jacobi
+	integral to check the robustness of our numerical approximation. Plot
+	the relative error in the Jacobi integral, \smash{$\frac{|J(t)-J(0)|}{J(0)}$},
+	for $t \in [0,7]$ for the \smash{$\theta=\frac{3\pi}{2}$} trajectory and
+	explain what you observe.
+      \item \textbf{Optional.} Try some alternative ODE solution methods and
+	compare the errors in $J$ that occur over the integration interval.
+    \end{enumerate}
+\end{enumerate}
+\end{document}
