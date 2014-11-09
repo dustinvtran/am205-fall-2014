@@ -1,0 +1,16 @@
+Linear programming
+------------------
+Two examples are provided that demonstrate linear programming optimization
+examples.
+
+linprog.py - this Python program solves the linear program described in the
+slides. It makes use of the Python module cvxopt that is available online.
+(Note: I had some small compilation problems with cvxopt on the Mac.)
+
+linprog.cc - this C++ program visualizes the 3D feasible region. It makes use
+of my software library Voro++ for computing Voronoi cells, which can also be
+used to constructed polyhedra. Voro++ is available from
+http://math.lbl.gov/voro++/ and once installed the program can be compiled
+using the following command:
+
+g++ -o linprog linprog.cc -I/usr/local/include/voro++
