@@ -1,0 +1,189 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,amsmath,amsfonts,mathpazo,microtype,nicefrac,graphicx}
+
+% Set-up for hypertext references
+\usepackage{hyperref,color,textcomp}
+\definecolor{webgreen}{rgb}{0,.35,0}
+\definecolor{webbrown}{rgb}{.6,0,0}
+\definecolor{RoyalBlue}{rgb}{0,0,0.9}
+\hypersetup{
+   colorlinks=true, linktocpage=true, pdfstartpage=3, pdfstartview=FitV,
+   breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,
+   plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,
+   hypertexnames=true, pdfhighlight=/O,
+   urlcolor=webbrown, linkcolor=RoyalBlue, citecolor=webgreen,
+   pdfauthor={Chris H. Rycroft},
+   pdfsubject={Harvard AM205 (Fall 2014)},
+   pdfkeywords={},
+   pdfcreator={pdfLaTeX},
+   pdfproducer={LaTeX with hyperref}
+}
+\hypersetup{pdftitle={AM205: Extra questions}}
+
+% Macro definitions
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\p}{\partial}
+\newcommand{\Trans}{\mathsf{T}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vb}{\vec{b}}
+
+\DeclareMathOperator{\rank}{rank}
+
+\begin{document}
+\section*{AM205: Take-home midterm exam}
+\textit{This exam was posted at 5~PM on November 13th. Answers are due at 5~PM
+on November 14th. They can either be submitted via the iSites dropbox, or in
+person to Pierce Hall 305.}
+
+\vspace{0.5em}
+\noindent\textit{For queries, contact the teaching staff using a private
+message on Piazza. Any clarifications will be posted on Piazza.}
+
+\vspace{0.5em}
+\noindent\textit{The exam is open book---any class notes, books, or online
+resources can be used. The exam must be completed by yourself and no
+collaboration with classmates or others is allowed.}
+
+\vspace{0.5em}
+\noindent\textit{The exam will be graded out of forty points. Point values
+for each question are given in square brackets.}
+
+\begin{enumerate}
+  \item 
+    \begin{enumerate}
+      \item \textbf{Modified Simpson's rule [7].} Determine a formula for the
+	integral \smash{$\int_a^b f(x) dx$} of a smooth function $f$ using
+	a variation on Newton--Cotes quadrature with control points at $a$,
+	$(3a+b)/4$, and $b$.
+      \item Suppose the formula from part (a) is used as part of a composite
+	integration rule where $[a,b]$ is divided into $N$ subintervals of
+	equal length $h$. Following similar steps to the composite trapezoid rule
+	analysis discussed in the lectures, find a bound\footnote{For full
+	credit, your bound should be as strong as that considered in the
+	analysis of the trapezoid rule.} for the absolute integration error
+	in terms of $h$, $a$, $b$, and $f'''$.
+    \end{enumerate}
+  \item \textbf{A class of Runge--Kutta methods [12].} Consider the Butcher tableau
+    shown below for a three-step Runge--Kutta method to solve the differential
+    equation $y'=f(t,y)$ for a scalar function $y(t)$.
+    \[
+    \begin{array}{c|ccc}
+      0 & & & \\
+      \beta & \beta & & \\
+      \gamma & 0 & \gamma & \\
+      \hline
+      & 0 & 0 & 1
+    \end{array}
+    \]
+    \begin{enumerate}
+      \item Show that for the method to be second-order accurate, $\gamma$ must
+	take a specific value, but there is no restriction on $\beta$.
+	Determine the specific value of $\gamma$.
+      \item Consider the restricted class of differential equations where
+	$f(t,y)=pt+qy$ for $p,q\in \R$. Find the specific value of $\beta$
+	that makes the method third-order accurate.\footnote{For this
+	restricted class of differential equations, the second derivatives
+	$f_{tt}$, $f_{ty}$, and $f_{yy}$ all vanish, which greatly simplifies
+	the algebra.}
+      \item Consider the boundary value problem
+	\begin{equation}
+	  y''+16(y')^4=2+2t, \qquad y(0)=0, \qquad y(1)=0
+	\end{equation}
+	for the scalar function $y(t)$ on the interval $t\in [0,1]$. Solve
+	this by reformulating it as an initial value problem,
+	\begin{equation}
+	  y''+16(y')^4=2+2t, \qquad y(0)=0, \qquad y'(0)=g, \label{eq:ivp}
+	\end{equation}
+	where $g$ is an unknown constant to be determined. Write a program
+	using the Runge--Kutta scheme and the specific values of $\beta$ and
+	$\gamma$ from parts (a) and (b)\footnote{If you are unable to calculate
+	$\beta$ and $\gamma$ in parts (a) and (b), you can alternatively solve
+	this part using Ralston's method, discussed in lecture 13.} to solve
+	Eq.~\ref{eq:ivp} over the interval $t\in [0,1]$ using a step size of
+	\smash{$h=\frac{1}{1000}$}. Show that $y(1)<0$ if $g=-0.6044$ and
+	$y(1)>0$ if $g=1$. Hence, write a bisection search algorithm to
+	determine a value of $g$ accurate to at least six decimal places such
+	that $y(1)=0$. For this value of $g$, plot $y$ and $y'$ over the
+	interval $t\in[0,1]$.
+    \end{enumerate}
+  \item 
+    \begin{enumerate}
+      \item \textbf{Differentiation on unequal grids [13].} Let $f:\R \to \R$ be a
+	smooth function, and let $b$ and $c$ be non-zero constants. Using only
+	three evaluations of $f$ at $x$, $x+b$, $x-c$ determine a general
+	second-order accurate formula\footnote{In this context, second-order
+	accuracy means that the error in the formula is $O(b^2)$ as $b\to 0$
+	keeping the ratio $b/c$ constant. Equivalently, the formula is $O(c^2)$
+	as $c\to 0$ keeping $c/b$ constant.} for $f'(x)$.
+      \item Consider the unequally-spaced grid
+	\begin{equation}
+	  x_k = (1+\alpha)^k,
+	\end{equation}
+	for the range $k=-N,-N+1,\ldots, N$ where $\alpha$ is a positive
+	non-zero constant, and the ``$k$'' superscript represents taking a
+	power. Let $f_k=f(x_k)$ be the discretized function values. Write
+	a program that numerically calculates $f'$ on this grid, using the
+	second-order accurate formula from part (a). For $|k|\ne N$, use the
+	three points $x_{k-1}$, $x_k$, and $x_{k+1}$. For $k=N$, use the three
+	points $x_N$, $x_{N-1}$, and $x_{N-2}$. For $k=-N$, use $x_{-N}$,
+	$x_{-N+1}$, $x_{-N+2}$.
+      \item Test the program using $f(x)=\sin 3x$ for $N=10,20,40,80,160,320,640$,
+	where $\alpha$ is chosen so that $x_N=3$ and
+	\smash{$x_{-N}=\frac{1}{3}$}. Make a log--log plot of absolute
+	infinity-norm\footnote{You should evaluate the infinity norm
+	numerically using the function values at all of the $x_k$.} error
+	\smash{$||f^\prime_\text{exact}-f^\prime_\text{numerical}||_\infty$} as
+	a function of $\alpha$, and use the plot to show that the numerically
+	computed derivative is second-order accurate in $\alpha$.
+      \item An alternative way to obtain a second-order accurate derivative
+	is to introduce a uniform grid $y_k$ such that $y_k=\log x_k$,
+	which has the fixed spacing $h=\log (1+\alpha)$. Consider an arbitrary
+	function $F(y)$ with discretized values $F_k=F(y_k)$, and write down
+	the standard second-order centered-difference formula for $F'(y_k)$ at
+	$k=0$. Now, by considering the relationship
+	\begin{equation}
+	  F(y)=f(e^y)
+	\end{equation}
+	and making use of the chain rule, obtain a second-order accurate
+	formula for $f'(x_k)$ at $k=0$.
+      \item By direct calculation, show that the difference between the
+	formulae for $f'(x_k)$ at $k=0$ from parts (b) and (d) is
+	$O(\alpha^2)$.
+    \end{enumerate}
+  \item \textbf{Determining a hidden charge distribution [8].} In
+    non-dimensionalized units, the electric potential for a single point charge
+    $q$ in three dimensions is
+    \begin{equation}
+      \phi(r) = \frac{q}{4\pi r},\label{eq:epot}
+    \end{equation}
+    where $r$ is the distance from the charge. If many point charges are
+    present, their potentials are added together. The electric field is given
+    by $\vec{E}=-\nabla \phi$.
+
+    Consider an enclosed box covering $|x|\le 1$, $|y|\le 1$ in a
+    two-dimensional plane. The box contains 25 point charges\footnote{Even
+    though the charges and the box live in the two-dimensional $xy$-plane, you
+    should assume that this plane is a cross-section through three-dimensional
+    space, and hence the electric potential for each charge will be given by
+    Eq.~\ref{eq:epot}.} of size $q_{i,j}$ located on a grid at positions
+    \smash{$(x,y)=(\frac{2i-4}{5},\frac{2j-4}{5})$} for $i=0,1,2,3,4$ and
+    $j=0,1,2,3,4$. The charges cannot be directly measured. However, a text
+    file \texttt{efield.txt} is provided on the course website that contains a
+    large number of measurements of the electric field at positions outside the
+    box.
+    \begin{enumerate}
+      \item By using any means necessary, determine the charges $q_{i,j}$.
+      \item You should find that to within numerical error, the $q_{i,j}$ are
+	integers in the range from 0 to 31, which can be interpreted as
+	five-digit binary numbers. For each of the five binary digits
+	corresponding to 1, 2, 4, 8, 16, plot the $5\times 5$ grid of charges,
+	coloring in the charge if the binary digit is 1 and leaving it blank
+	otherwise.
+    \end{enumerate}
+\end{enumerate}
+\end{document}

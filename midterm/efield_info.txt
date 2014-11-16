@@ -1,0 +1,6 @@
+The file "efield.txt" has four columns:
+
+1: x position
+2: y postiion
+3: x component of the electric field
+4: y component of the electric field
