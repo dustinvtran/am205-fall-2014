@@ -1,0 +1,210 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,amsmath,amsfonts,mathpazo,microtype,nicefrac,graphicx}
+
+% Set-up for hypertext references
+\usepackage{hyperref,color,textcomp}
+\definecolor{webgreen}{rgb}{0,.35,0}
+\definecolor{webbrown}{rgb}{.6,0,0}
+\definecolor{RoyalBlue}{rgb}{0,0,0.9}
+\hypersetup{
+   colorlinks=true, linktocpage=true, pdfstartpage=3, pdfstartview=FitV,
+   breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,
+   plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,
+   hypertexnames=true, pdfhighlight=/O,
+   urlcolor=webbrown, linkcolor=RoyalBlue, citecolor=webgreen,
+   pdfauthor={Chris H. Rycroft},
+   pdfsubject={Harvard AM205 (Fall 2014)},
+   pdfkeywords={},
+   pdfcreator={pdfLaTeX},
+   pdfproducer={LaTeX with hyperref}
+}
+\hypersetup{pdftitle={AM205: Assignment 5}}
+
+% Macro definitions
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\p}{\partial}
+\newcommand{\Trans}{\mathsf{T}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vb}{\vec{b}}
+
+\DeclareMathOperator{\rank}{rank}
+
+\begin{document}
+\section*{AM205: Assignment 5 (due 5~PM, December 2nd)}
+\begin{enumerate}
+  \item \textbf{Rosenbrock function.} A well known benchmark problem for
+    optimization algorithms is minimization of Rosenbrock's function
+    \begin{equation}
+      f(x,y) = 100(y-x^2)^2 + (1-x)^2,
+    \end{equation}
+    which has a global minimum of $0$ at $(x,y) = (1,1)$. We shall apply three
+    different optimization algorithms for this function; in each case you
+    should terminate the optimization algorithm when the absolute step
+    size falls below $10^{-8}$.
+    \begin{enumerate}
+      \item Minimize Rosenbrock's function using steepest descent. You should
+	try the three starting points $[-1,1]^\Trans$, $[0,1]^\Trans$, and
+	$[2,1]^\Trans$, and report the number of iterations required for each
+	starting point. Make a plot for each starting point that shows the
+	contours of Rosenbrock's function, as well as the optimization path
+	that is followed.
+	
+	You may use a library function for the line search in steepest descent
+	if you wish. Also, note that steepest descent may require a large
+	number of iterations, so you should terminate the scheme when either
+	the step size tolerance (indicated above) is satisfied, or once
+	2000 iterations have been performed.
+      \item Repeat part (a), but with Newton's method (without line search)
+	instead of steepest descent.
+      \item Repeat part (a), but with BFGS instead of steepest descent. In your
+	implementation of BFGS, set $B_0$ to the identity matrix.
+    \end{enumerate}
+  \item \textbf{Shape determination (A).} Consider a flexible
+    \href{http://en.wikipedia.org/wiki/Skipping_rope}{jump rope} of length $R$
+    that is initially in a vertical $xy$ plane, and hung between the points
+    $(0,0)$ and $(L,0)$. Let the shape of the rope be described parametrically
+    by
+    \begin{equation}
+      x(s) = \frac{Ls}{R} + \sum_{k=1}^8 c_k \sin \frac{\pi k s}{R}, \qquad y(s) = \sum_{k=1}^8 d_k \sin \frac{\pi k s}{R},
+    \end{equation}
+    where the coordinate $s$ is the distance along the string when it is
+    unstretched. The jump rope is rotated around the $x$ axis with angular
+    velocity $\omega$. If $\rho$ is the mass per unit unstretched length, its
+    kinetic energy is
+    \begin{equation}
+      T= \int_0^R \rho y^2 \omega^2 ds
+      \label{eq:kine}
+    \end{equation}
+    and its elastic potential energy is
+    \begin{equation}
+      V= \int_0^R \mu \left(\sqrt{\left(\tfrac{dx}{ds}\right)^2 + \left(\tfrac{dy}{ds}\right)^2}-1\right)^2 ds
+      \label{eq:elae}
+    \end{equation}
+    for some stiffness constant $\mu$. Gravitational potential energy is
+    neglected. Using the
+    \href{http://en.wikipedia.org/wiki/Principle_of_least_action}{principle of
+    stationary action}, the equilibrium shape of the rope will minimize $V-T$.
+
+    Let the vector of parameters be $b=(c_1,c_2,\ldots,c_8,d_1,d_2,\ldots,d_8)$
+    and let the residual be $r(b)=V-T$, where the integrals in
+    Eqs.~\ref{eq:kine} and \ref{eq:elae} are evaluated at 251 control points
+    using a composite integration rule of your choice.
+    \begin{enumerate}
+      \item Determine integral expressions for the components of $\nabla r$.
+      \item Using your answer from part (a), write a program to minimize $r$
+	with respect to $b$. You may use a library function from Python, Matlab,
+	or other software, although you will need to write the residual
+	function and its gradient. Use the parameters $R=2$, $\omega=5$, and
+	$L=\rho=g=1$, and use an initial guess of $d_1=1$ with the rest of $b$
+	being zero. On the same axes, plot the shape of the rope for
+	$\mu=20,200,2000$.
+      \item For $\mu=20,200,2000$, run your minimization algorithm starting
+	from $d_2=0.5$ and all other components of $b$ being zero. Compare your
+	solution with part (b).
+      \item {\bf Optional.} Find two friends and a rope. Ask the two friends to
+	each hold one end of the rope, and spin it between them. From a
+	position perpendicular to the spinning axis, take a photo of the rope,
+	trying to catch it at the moment when it is in a vertical plane.
+	By choosing parameters appropriately, superpose one of your calculated
+	curves from on top of the photo, and check the level of agreement. In
+	addition, see if the two friends can recreate the curve from 2(c).	
+    \end{enumerate}
+  \item \textbf{Shape determination (B).} Now consider the case where the rope
+    of length $R$ between $(0,0)$ and $(L,0)$ is inextensible. In this case,
+    the rope's shape will maximize $T$ as given in Eq.~\ref{eq:kine}, subject
+    to a constraint that its total length will be equal to $R$. Determine an
+    appropriate parameterization of the shape of the rope, and solve the
+    resulting constrained optimization problem. Find a solution that is similar
+    in shape to your solution for $\mu=2000$ from question 2(b), and make a
+    plot overlaying these two solutions.
+  \item \textbf{Quantum eigenmodes.} Consider the one-dimensional time-independent
+    Schr\"odinger equation, which governs the behavior of a quantum particle
+    in a potential well. In non-dimension-alized units where \smash{$\frac{\hbar^2}{2m}=1$},
+    the equation is
+    \begin{equation}
+      - \frac{\p^2 \Psi}{\p x^2} + v(x) \Psi(x) = E\Psi(x), \label{eq:schrod}
+    \end{equation}
+    where $v:\R \to \R$ is a real-valued potential fucntion, $\Psi:\R \to \R$
+    is the wavefunction, and $E\in \R$ is an eigenvalue which corresponds to
+    the energy of the system. In general, the wave function is complex-valued,
+    but for the time-independent case it is always possible to write it as a
+    real-valued function.
+
+    The Schr\"odinger equation is posed on the infinite domain $(-\infty,\infty)$,
+    and the wavefunction must satisfy $\Psi(x)\to 0$ as $x\to \pm \infty$ so
+    that the norm of $\Psi$ is bounded. In this question, we shall consider the
+    finite interval $[-12,12]$, which is large enough to impose zero Dirichlet
+    boundary conditions at the boundaries, $\Psi(\pm 12)=0$, without
+    compromising the accuracy of the results.
+
+    As an example of a solution of Eq.~\ref{eq:schrod}, in Figure
+    \ref{fig:quant} we show the first five eigenvalues and eigenmodes on $x \in
+    [−12, 12$] for the Schr\"odinger solution in the case that $v(x) = x^2/10$.
+
+    \begin{figure}
+      \begin{center}
+	\begin{tabular}{cc}
+	  \includegraphics[width=0.5\textwidth]{quant_temp} & \parbox{3cm}{
+	\begin{tabular}{|c|c|}
+	  \hline
+	  $E_5$ & 2.846013 \\
+	  $E_4$ & 2.213572 \\
+	  $E_3$ & 1.581127 \\
+	  $E_2$ & 0.948679 \\
+	  $E_1$ & 0.316227 \\
+	  \hline
+	\end{tabular}\\
+	\vspace{8cm}
+	\\~\\
+	}
+      \end{tabular}
+      \end{center}
+      \vspace{-6cm}
+      \caption{The five lowest eigenvalues, and the corresponding eigenmodes,
+      for $v(x) = x^2/10$. To show the eigenmodes in a visually appealing way
+      here we have plotted $y_i(x) = 3\Psi_i(x) + E_i$ for $i = 1, \ldots ,
+      5$.\label{fig:quant}}
+    \end{figure}
+    \begin{enumerate}
+      \item Compute the five lowest eigenvalues and corresponding eigenmodes for
+	the potentials
+	\begin{enumerate}
+	  \item $v_1(x) = |x|$,
+	  \item $v_2(x) = 12 \left( \frac{x}{10} \right)^4 - \frac{x^2}{18} + \frac{x}{8} + \frac{13}{10}$,
+	  \item $v_3(x) = 8|||x|-1|-1|$.
+	\end{enumerate}
+	You should use a second-order accurate
+	finite-difference apporoximation of Schr\"odinger equation with
+	$n=1921$ grids points on the interval $[-12,12]$, end then employ an
+	eigensolve such as the Python/Matlab \texttt{eig}/\texttt{eigs}
+	routines. Impose zero boundary conditions at $x=\pm 12$ as described
+	above. Present your results using a figure and a table in the same way
+	as in Figure \ref{fig:quant}. 
+      \item Quantum mechanics tells us that if a particle has a wavefunction $\Psi(x)$,
+	the the probability of finding it in a region $[a,b]$ is given by
+	\begin{equation}
+	  \frac{\int_a^b |\Psi(x)|^2 dx}{\int_{-\infty}^\infty |\Psi(x)|^2 dx}.
+	\end{equation}
+	For $[a,b] \subset [-12,12]$ this can be approximated on the finite
+	grid as
+	\begin{equation}
+	  \frac{\int_a^b |\Psi(x)|^2 dx}{\int_{-12}^{12} |\Psi(x)|^2 dx}.\label{eq:qprob}
+	\end{equation}
+	For each of the first five eigenmodes for the potential $v_2$, use the
+	composite Simpson rule and Eq.~\ref{eq:qprob} to compute the probability that the
+	particle is in the region $x \in [0,6]$ (\textit{i.e.} specify five different
+	probabilities, one corresponding to each eigenmode). When you use the
+	composite Simpson rule here, you should use all grid points from (a)
+	that are inside the interval of interest as quadrature points.
+      \item \textbf{Optional.} Modify your program from part (a) to use
+	fourth-order accurate finite differences, using the stencils described
+	\href{http://en.wikipedia.org/wiki/Finite_difference_coefficient}{on
+	the web}, with suitable modifications at the end points.
+    \end{enumerate}
+\end{enumerate}
+\end{document}

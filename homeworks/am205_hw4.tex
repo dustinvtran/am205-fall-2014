@@ -155,11 +155,12 @@ homework can be downloaded as a single ZIP file from the course website.}
 	$t=1.005\text{~s}$. You may wish test your program over smaller
 	intervals of $t$ and consider possible code optimizations if necessary.
       \item Three people B, C, and M are trying to work at locations
-	$(10,167)$, $(35,73)$, and $(67,115)$. Find the time $t$ in seconds,
-	accurate to at least two decimal places, when the three people first
-	hear the sound, defined as when $|p(t)|$ at their location exceeds
-	$10^{-3}\text{~Pa}$. Discuss whether your results are reasonable, given
-	the locations of the people in relation to the loudspeaker.
+	$(10,167)$, $(35,73)$, and $(67,115)$, respectively. Find the time $t$
+	in seconds, accurate to at least two decimal places, when the three
+	people first hear the sound, defined as when $|p(t)|$ at their location
+	exceeds $10^{-3}\text{~Pa}$. Discuss whether your results are
+	reasonable, given the locations of the people in relation to the
+	loudspeaker.
       \item On a single pair of axes, plot $p(t)$ at the three people's
 	locations over the interval $0 \le t \le 1\text{~s}$. Which person is
 	most likely to be disturbed by the loudspeaker?
@@ -199,7 +200,7 @@ homework can be downloaded as a single ZIP file from the course website.}
     omitted for the sake of simplicity.}
     \begin{align}
       \left.\frac{\partial u}{\partial r}\right|_{r=R_1} &= 0, \label{eq:pipebc1} \\
-      \left.\alpha \frac{\partial u}{\partial r}\right|_{r=R_2} &= -u(R_2). \label{eq:pipebc2}
+      \left.\alpha \frac{\partial u}{\partial r}\right|_{r=R_2} &= -u(R_2,t). \label{eq:pipebc2}
     \end{align}
     Here $\alpha$ is the thermal diffusivity of the pipe, and $u(r,t)$ is the
     non-dimensionalized temperature in the pipe, defined as
